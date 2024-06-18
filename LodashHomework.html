@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .slider {
+            max-width: 400px;
+            margin: 0 auto;
+            z-index: 1;
+            position: relative;
+        }
+
+        .slider__input {
+            width: 100%;
+        }
+
+        .slider__image {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+
+        svg {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+
+        }
+    </style>
+</head>
+
+<body>
+    <svg>
+        <circle id="point" cx="50" cy="50" r="5" fill="#FFA500" />
+    </svg>
+
+    <div class="slider">
+        <input type="range" min="200" max="400" value="300" class="slider__input" />
+        <img src="https://via.placeholder.com/300x300" class="slider__image" />
+    </div>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+        integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const slider = document.querySelector('.slider__input');
+        const sliderImage = document.querySelector('.slider__image');
+
+        slider.addEventListener('input', _.debounce(sliderMove, 400));
+
+        function sliderMove(e) {
+            sliderImage.style.width = `${e.target.value}px`
+            sliderImage.style.height = `${e.target.value}px`
+            sliderImage.src = `https://via.placeholder.com/${e.target.value}x${e.target.value}`
+        }
+
+        const point = document.querySelector('#point');
+
+        document.body.addEventListener('mousemove', _.throttle(updateMove, 50));
+
+
+        function updateMove(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+            point.setAttribute('cx', x);
+            point.setAttribute('cy', y);
+        }
+
+    </script>
+</body>
+
+</html>
